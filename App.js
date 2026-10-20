@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Alert, Linking, ActivityIndicator } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { Asset, usePermissions } from 'expo-media-library';
+//import { Asset } from 'expo-media-library'; //iOS ou build
+import { saveToLibraryAsync, usePermissions } from 'expo-media-library/legacy'; //Android com Expo Go
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function App() {
@@ -43,7 +44,8 @@ function CameraScreen() {
     setSalvando(true);
     try {
       const foto = await camera.current.takePictureAsync({ quality: 0.8 });
-      await Asset.create(foto.uri);
+      //await Asset.create(foto.uri); //iOS ou Build
+      await saveToLibraryAsync(foto.uri); //Android no Expo Go
       Alert.alert('Sucesso', 'Foto salva na galeria!');
     } catch (erro) {
       console.log(erro);
